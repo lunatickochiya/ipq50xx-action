@@ -256,7 +256,7 @@ function add_openwrt_files() {
 	mkdir -p openwrt/feeds/lunatic7
 
 	# [ -d package ] && mv -f package/* openwrt/package
-	[ -d $OpenWrt_PATCH_FILE_DIR/package-for-openwrt-ipq50xx ] && mv -f $OpenWrt_PATCH_FILE_DIR/package-for-openwrt-ipq50xx/* openwrt/package
+	#[ -d $OpenWrt_PATCH_FILE_DIR/package-for-openwrt-ipq50xx ] && mv -f $OpenWrt_PATCH_FILE_DIR/package-for-openwrt-ipq50xx/* openwrt/package
 
 # for 2410 ipq
 	if [ "$OpenWrt_PATCH_FILE_DIR" = "openwrt-ipq50xx" ]; then
