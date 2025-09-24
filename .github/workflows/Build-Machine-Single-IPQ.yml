@@ -237,7 +237,7 @@ jobs:
       id: config
       env:
         INPUT_PKGS_CFG_STATUS: ${{ github.event.inputs.packages_mod }}
-        INPUT_PKGS_CFG_FOO: ${{ github.event.inputs.packages }}"
+        INPUT_PKGS_CFG_FOO: ${{ github.event.inputs.packages }}
         SFE_INPUT_STATUS: ${{ github.event.inputs.SFE_BUILDIN }}
       run: |
         $GITHUB_WORKSPACE/core-neo.sh fix-openwrt-feeds
