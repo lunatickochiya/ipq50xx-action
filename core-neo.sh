@@ -436,7 +436,9 @@ function autosetver() {
 	if [ "$OpenWrt_PATCH_FILE_DIR" = "openwrt-2410" ]; then
 		version=24.10
 	fi
-
+	if [ "$OpenWrt_PATCH_FILE_DIR" = "openwrt-ipq50xx" ]; then
+		version=21.02-NSS
+	fi
 	# 在文件的 'exit 0' 之前插入 DISTRIB_DESCRIPTION 信息
 	sed -i "/^exit 0$/i\
 	\echo \"DISTRIB_DESCRIPTION='OpenWrt $version Compiled by 2U4U'\" >> /etc/openwrt_release
@@ -662,7 +664,7 @@ function add_openwrt_kmods() {
 	cd openwrt && make defconfig && cd ../
 	fi
 
-	if [ "$OpenWrt_PATCH_FILE_DIR" = "openwrt-2410" ]; then
+	if [ "$OpenWrt_PATCH_FILE_DIR" = "openwrt-2410" ] || [ "$OpenWrt_PATCH_FILE_DIR" = "openwrt-ipq50xx" ]; then
 	add_all_kmod_config
 	cd openwrt && make defconfig && cd ../
 	add_all_kmod_config
