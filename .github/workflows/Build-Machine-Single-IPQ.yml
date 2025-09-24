@@ -46,7 +46,7 @@ on:
 
       SETIP:
         description: 'Set ip address'
-        default: '192.168.17.1'
+        default: '192.168.7.1'
         required: false
         type: choice
         options:
@@ -89,7 +89,7 @@ on:
       patch_repo:
         description: 'Use json patch repo true(1) or false(0) See ReadME'
         required: true
-        default: '{"Branch": "ipq50xx-hzyitc-mod","IPQ_Firmware": "ipq-nss-11-4","OPENSSL_3_5": "1", "BCM_FULLCONE": "1", "TRY_BBR_V3": "1", "Firewall_Allow_WAN": "0", "ADD_IB": "1", "ADD_SDK": "1", "DOCKER_BUILDIN": "0"}'
+        default: '{"Branch": "ipq50xx-hzyitc-mod","OPENSSL_3_5": "0", "BCM_FULLCONE": "0", "TRY_BBR_V3": "0", "Firewall_Allow_WAN": "1", "ADD_IB": "0", "ADD_SDK": "0", "DOCKER_BUILDIN": "0"}'
 
 env:
   TZ: Asia/Shanghai
@@ -164,7 +164,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         chmod +x gen-sha256sum.sh add-test-packages.sh add-sfe-packages.sh core.sh
-        $GITHUB_WORKSPACE/core.sh init-pkg-env
+        $GITHUB_WORKSPACE/core-neo.sh init-pkg-env
 
     - name: 设置GITHUB_ENV
       id: env
@@ -173,17 +173,7 @@ jobs:
         CONFIG_JSON_INPUT: ${{ github.event.inputs.config_repo }}
       run: |
         echo ${{matrix.target}}
-        $GITHUB_WORKSPACE/core.sh init-gh-env-2410-ipq
-
-    - name: 导入机器及安装包config
-      run: |
-        if [ ${{ env.Branch }} = 24.10-nss-6.12 ]; then
-        $GITHUB_WORKSPACE/$DIY_SH add-test-config
-        # echo "Kernel_Test=_Kernel_Test_Ver" >> $GITHUB_ENV
-        fi
-        $GITHUB_WORKSPACE/core.sh init-math-config
-        $GITHUB_WORKSPACE/core.sh init-openwrt-pkg-config-nss
-
+        $GITHUB_WORKSPACE/core-neo.sh init-gh-env-2410-ipq
 
     - name: 克隆源代码
       working-directory: /workdir
@@ -207,12 +197,12 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        $GITHUB_WORKSPACE/core.sh ln-openwrt
+        $GITHUB_WORKSPACE/core-neo.sh ln-openwrt
 
     - name: Patch 自定义
       id: patch
       run: |
-        $GITHUB_WORKSPACE/core.sh init-openwrt-patch-2410-ipq
+        $GITHUB_WORKSPACE/core-neo.sh init-openwrt-patch-2410-ipq
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 自定义安装包(优先于feeds)
@@ -221,7 +211,7 @@ jobs:
       env:
         SFE_INPUT_STATUS: ${{ github.event.inputs.SFE_BUILDIN }}
       run: |
-        $GITHUB_WORKSPACE/core.sh add-openwrt-files-2410
+        $GITHUB_WORKSPACE/core-neo.sh add-openwrt-files-2410
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 设置 IP 地址
@@ -250,21 +240,21 @@ jobs:
         INPUT_PKGS_CFG_FOO: ${{ github.event.inputs.packages }}"
         SFE_INPUT_STATUS: ${{ github.event.inputs.SFE_BUILDIN }}
       run: |
-        $GITHUB_WORKSPACE/core.sh fix-openwrt-feeds
+        $GITHUB_WORKSPACE/core-neo.sh fix-openwrt-feeds
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 添加kmod
       if: steps.config.outputs.status == 'success' && env.ALLKMOD == '1'
       id: config2
       run: |
-        $GITHUB_WORKSPACE/core.sh add-openwrt-kmods
+        $GITHUB_WORKSPACE/core-neo.sh add-openwrt-kmods
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Run awk command
       if: steps.config.outputs.status == 'success'
       working-directory: ./openwrt
       run: |
-        $GITHUB_WORKSPACE/core.sh awk-openwrt-config
+        $GITHUB_WORKSPACE/core-neo.sh awk-openwrt-config
 
     - name: 下载包文件
       if: steps.config.outputs.status == 'success'
