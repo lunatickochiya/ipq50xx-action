@@ -163,7 +163,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        chmod +x gen-sha256sum.sh add-test-packages.sh add-sfe-packages.sh core.sh
+        chmod +x gen-sha256sum.sh add-test-packages.sh add-sfe-packages.sh core.sh core-neo.sh
         $GITHUB_WORKSPACE/core-neo.sh init-pkg-env
 
     - name: 设置GITHUB_ENV

@@ -15,12 +15,13 @@ OpenWrt_PATCH_FILE_DIR="openwrt-ipq"
 
 function init_pkg_env() {
 	sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+	sudo add-apt-repository ppa:npalix/coccinelle
 	sudo -E apt-get -qq update
 	sudo -E apt-get -qq install build-essential clang flex g++ gawk gcc-multilib gettext \
 		git libncurses5-dev libssl-dev python3-distutils python3-pyelftools python3-setuptools \
 		libpython3-dev rsync unzip zlib1g-dev swig aria2 jq subversion qemu-utils ccache rename \
 		libelf-dev device-tree-compiler libgnutls28-dev coccinelle libgmp3-dev libmpc-dev libfuse-dev \
-		b43-fwcutter cups-ppdc
+		b43-fwcutter cups-ppdc coccinelle
 
 	sudo -E apt-get -qq purge azure-cli ghc* zulu* llvm* firefox powershell openjdk* dotnet* google* mysql* php* android*
 	sudo -E apt-get -qq autoremove --purge
